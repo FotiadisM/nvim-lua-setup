@@ -37,10 +37,10 @@ vim.g.nvim_tree_icons = {
         symlink_open = "",
     },
     lsp = {
-        hint = "",
-        info = "",
-        warning = "",
-        error = "",
+        hint = " ",
+        info = " ",
+        warning = " ",
+        error = " ",
     }
 }
 

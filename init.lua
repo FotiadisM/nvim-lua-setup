@@ -1,7 +1,8 @@
 require("pluginList")
 
 -- theme
-require("theme")
+local base16 = require("base16")
+base16(base16.themes["onedark"], true)
 require "top-bufferline"
 require "statusline"
 
@@ -14,6 +15,7 @@ require("telescope-nvim")
 require("treesitter")
 require("nvim-lspconfig")
 require("nvim-completion")
+require("format")
 
 -- git
 require("gitsigns-nvim")
@@ -24,8 +26,10 @@ require("nvim-autopairs").setup()
 
 -- colors
 require("colors")
+-- require("nvim-colorizer")
 
 -- indent-blankline
+vim.g.indent_blankline_char = "│"
 vim.g.indent_blankline_use_treesitter = true
 vim.g.indent_blankline_show_first_indent_level = false
 vim.g.indent_blankline_show_trailing_blankline_indent = false
@@ -46,16 +50,17 @@ vim.o.mouse = "a"
 vim.o.splitbelow = true
 vim.o.splitright = true
 vim.o.termguicolors = true
-vim.o.signcolumn = "number"
+vim.o.signcolumn = "yes"
 vim.o.hidden = true
 vim.o.cmdheight = 1
 
 -- My mappings
-local opt = { noremap = true, silent = true}
-
 vim.api.nvim_set_keymap("i", "jj", "<Esc>", { noremap = true })
-vim.api.nvim_set_keymap("i", "<C-s>", ":w<CR>", opt)
-vim.api.nvim_set_keymap("n", "<C-s>", ":w<CR>", opt)
+vim.api.nvim_set_keymap("n", "<C-s>", ":w<CR>", { noremap = true})
+vim.api.nvim_set_keymap("i", "<C-s>", "<Esc>:w<CR>a", { noremap = true })
+vim.api.nvim_set_keymap("n", "<C-w>", ":e#<CR>:bd#<CR>", { noremap = true })
+
+local opt = { noremap = true, silent = true}
 
 -- moving between windows
 vim.api.nvim_set_keymap("n", "<C-h>", "<C-w>h", opt)

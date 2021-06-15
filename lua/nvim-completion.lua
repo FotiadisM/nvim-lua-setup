@@ -8,11 +8,11 @@ local t = function(str)
 end
 
 function _G.tab_completion()
-    return vim.fn.pumvisible() == 1 and t('<C-n>') or t('<Tab>')
+    return vim.fn.pumvisible() == 1 and t('<Down>') or t('<Tab>')
 end
 
 function _G.s_tab_completion()
-    return vim.fn.pumvisible() == 1 and t('<C-p>') or t('<S-Tab>')
+    return vim.fn.pumvisible() == 1 and t('<Up>') or t('<S-Tab>')
 end
 
 -- Use <Tab> and <S-Tab> to navigate through popup menu
@@ -20,7 +20,10 @@ vim.api.nvim_set_keymap('i', '<Tab>', 'v:lua.tab_completion()', {expr = true, no
 vim.api.nvim_set_keymap('i', '<S-Tab>', 'v:lua.s_tab_completion()', {expr = true, noremap = true})
 
 -- Set completeopt to have a better completion experience
-vim.o.completeopt = "menuone,noinsert,noselect"
+vim.o.completeopt = "menuone,noinsert"
+
+vim.g.completion_enable_auto_paren = 1
+vim.g.completion_trigger_character = { "." }
 
 vim.api.nvim_exec([[
 	autocmd BufEnter * lua require'completion'.on_attach()
@@ -28,6 +31,9 @@ vim.api.nvim_exec([[
 
 -- Avoid showing message extra message when using completion
 -- vim.o.shortmess = "shmc"
+vim.api.nvim_exec([[
+	set shortmess+=c
+]], false)
 
 -- map <C-Space> to manually trigger completion
 vim.api.nvim_set_keymap("i", "<C-Space>", "<Plug>(completion_trigger)", { silent = true })

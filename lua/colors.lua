@@ -1,11 +1,11 @@
 local cmd = vim.cmd
 -- blankline
 
-cmd "hi IndentBlanklineChar guifg=#282c34"
+cmd "hi IndentBlanklineChar guifg=#696969"
 
 -- misc --
-cmd "hi LineNr guifg=#42464e guibg=#282c34"
-cmd "hi SignColumn guibg=#282c34"
+cmd "hi SignColumn guibg=#none"
+cmd "hi LineNr guifg=#42464e guibg=#none"
 cmd "hi Comment guifg=#42464e"
 cmd "hi NvimInternalError guifg=#f9929b"
 cmd "hi VertSplit guifg=#2a2e36"
@@ -18,7 +18,7 @@ cmd "hi PmenuSbar guibg =#353b45"
 cmd "hi PmenuThumb guibg =#81A1C1"
 
 -- inactive statuslines as thin splitlines
-cmd("hi! StatusLineNC gui=underline guifg=#383c44")
+cmd "hi! StatusLineNC gui=underline guifg=#383c44"
 
 -- line n.o
 cmd "hi clear CursorLine"
@@ -32,16 +32,28 @@ cmd "hi DiffModified guifg = #81A1C1 guibg = none"
 -- NvimTree
 cmd "hi NvimTreeFolderIcon guifg = #61afef"
 cmd "hi NvimTreeFolderName guifg = #61afef"
-cmd "hi NvimTreeIndentMarker guifg=#383c44"
+-- cmd "hi NvimTreeIndentMarker guifg=#383c44"
 cmd "hi NvimTreeNormal guibg=#1b1f27"
-cmd "hi NvimTreeVertSplit guifg=#1e222a"
-cmd "hi NvimTreeRootFolder guifg=#1b1f27"
+-- cmd "hi NvimTreeVertSplit guifg=#1e222a"
+-- cmd "hi NvimTreeRootFolder guifg=#1b1f27"
 
 -- telescope
 cmd "hi TelescopeBorder   guifg=#2a2e36"
 cmd "hi TelescopePromptBorder   guifg=#2a2e36"
 cmd "hi TelescopeResultsBorder  guifg=#2a2e36"
 cmd "hi TelescopePreviewBorder  guifg=#525865"
+
+-- gitsigns.nvim
+cmd "hi GitSignsAdd guibg=#none"
+cmd "hi GitSignsAddLn guibg=#none"
+cmd "hi GitSignsAddNr guibg=#none"
+cmd "hi GitSignsChange guibg=#none"
+cmd "hi GitSignsChangeLn guibg=#none"
+cmd "hi GitSignsChangeLn guibg=#none"
+cmd "hi GitSignsChangeNr guibg=#none"
+cmd "hi GitSignsDelete guibg=#none"
+cmd "hi GitSignsDeleteLn guibg=#none"
+cmd "hi GitSignsDeleteNr guibg=#none"
 
 -- LspDiagnostics ---
 

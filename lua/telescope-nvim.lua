@@ -62,9 +62,8 @@ tl.load_extension("media_files")
 -- mappings
 
 local opt = {noremap = true, silent = true}
-vim.api.nvim_set_keymap("n", "<leader>ff", [[<cmd>lua require('telescope.builtin').find_files()<CR>]], opt)
+vim.api.nvim_set_keymap("n", "<C-p>", [[<cmd>lua require('telescope.builtin').find_files()<CR>]], opt)
 vim.api.nvim_set_keymap("n", "<leader>fp", [[<cmd>lua require('telescope').extensions.media_files.media_files()<CR>]], opt)
 vim.api.nvim_set_keymap("n", "<leader>fb", [[<cmd>lua require('telescope.builtin').buffers()<CR>]], opt)
 vim.api.nvim_set_keymap("n", "<leader>fh", [[<cmd>lua require('telescope.builtin').help_tags()<CR>]], opt)
 vim.api.nvim_set_keymap("n", "<leader>fo", [[<cmd>lua require('telescope.builtin').oldfiles()<CR>]], opt)
-vim.api.nvim_set_keymap("n", "<leader>fm", [[<cmd> Neoformat<CR>]], opt)
