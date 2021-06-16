@@ -26,7 +26,6 @@ return packer.startup(
         use "kabouzeid/nvim-lspinstall"
 		use "nvim-lua/completion-nvim"
 		use "onsails/lspkind-nvim"
-		use "mhartington/formatter.nvim"
 
 		-- git
 		use { "lewis6991/gitsigns.nvim", requires = {"nvim-lua/plenary.nvim"}}

@@ -15,7 +15,6 @@ require("telescope-nvim")
 require("treesitter")
 require("nvim-lspconfig")
 require("nvim-completion")
-require("format")
 
 -- git
 require("gitsigns-nvim")
@@ -53,6 +52,10 @@ vim.o.termguicolors = true
 vim.o.signcolumn = "yes"
 vim.o.hidden = true
 vim.o.cmdheight = 1
+
+vim.api.nvim_exec([[
+	autocmd BufEnter * lua vim.o.fo = ""
+]], false)
 
 -- My mappings
 vim.api.nvim_set_keymap("i", "jj", "<Esc>", { noremap = true })

@@ -18,7 +18,7 @@ local on_attach = function(client, bufnr)
     buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
     buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
     buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-    buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+    buf_set_keymap('n', '<F2>', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
     buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
     buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
     buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
@@ -34,11 +34,12 @@ local on_attach = function(client, bufnr)
 
     -- Set autocommands conditional on server_capabilities
     if client.resolved_capabilities.document_highlight then
+		print("supports highlighting")
         vim.api.nvim_exec([[
         augroup lsp_document_highlight
-        autocmd! * <buffer>
-        autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
-        autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
+			autocmd! * <buffer>
+			autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
+			autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
         augroup END
         ]], false)
     end
@@ -95,14 +96,40 @@ local function setup_servers()
         if server == "lua" then
             config.settings = lua_settings
         end
+
         if server == "sourcekit" then
             config.filetypes = {"swift", "objective-c", "objective-cpp"}; -- we don't want c and cpp!
         end
+
         if server == "clangd" then
             config.filetypes = {"c", "cpp"}; -- we don't want objective-c and objective-cpp!
         end
 
-        require'lspconfig'[server].setup(config)
+		if server == "efm" then
+			config.init_options = { documentFormatting = true }
+			config.filetypes = {
+				"go",
+				"typescriptreact"
+			}
+			config.settings = {
+				languages = {
+					go = {{
+						rootMarkers = { "go.mod" },
+						formatCommand = "goimports",
+						formatStdin = true,
+						lintCommand = "golint",
+						lintStdin = true,
+						lintFormats = { "%f:%l:%c: %m" },
+					}},
+					typescriptreact = {{
+						rootMarkers = { "package.json" },
+						formatCommand = "./node_modules/.bin/prettier"
+					}}
+				}
+			}
+		end
+
+		require'lspconfig'[server].setup(config)
     end
 end
 
