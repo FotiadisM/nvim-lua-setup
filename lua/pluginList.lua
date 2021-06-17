@@ -24,7 +24,8 @@ return packer.startup(
 		use "nvim-treesitter/nvim-treesitter"
 		use "neovim/nvim-lspconfig"
         use "kabouzeid/nvim-lspinstall"
-		use "nvim-lua/completion-nvim"
+		use "hrsh7th/nvim-compe"
+		-- use "nvim-lua/completion-nvim"
 		use "onsails/lspkind-nvim"
 
 		-- git

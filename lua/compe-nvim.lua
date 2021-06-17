@@ -1,7 +1,39 @@
-require("completion")
+-- Set completeopt to have a better completion experience
+vim.o.completeopt = "menuone,noselect"
 
--- Use completion-nvim in every buffer
--- vim.api.cmd("autocmd BufEnter * lua require'completion'.on_attach()")
+-- Avoid showing message extra message when using completion
+-- vim.o.shortmess = "shmc"
+vim.api.nvim_exec([[
+	set shortmess+=c
+]], false)
+
+require("compe").setup({
+	enabled = true;
+	autocomplete = true;
+	debug = false;
+	min_length = 1;
+	preselect = "always";
+	throttle_time = 80;
+	source_timeout = 200;
+	resolve_timeout = 800;
+	incomplete_delay = 400;
+	max_abbr_width = 100;
+	max_kind_width = 100;
+	max_menu_width = 100;
+	documentation = true;
+
+	source = {
+		path = true;
+		buffer = true;
+		calc = true;
+		nvim_lsp = true;
+		nvim_lua = true;
+		-- vsnip = true;
+		-- ultisnips = true;
+	};
+})
+
+vim.cmd("hi link CompeDocumentation NormalFloat")
 
 local t = function(str)
     return vim.api.nvim_replace_termcodes(str, true, true, true)
@@ -15,28 +47,13 @@ function _G.s_tab_completion()
     return vim.fn.pumvisible() == 1 and t('<Up>') or t('<S-Tab>')
 end
 
+-- map <C-Space> to manually trigger completion
+vim.api.nvim_set_keymap("i", "<C-Space>", "compe#complete()", { silent = true, expr = true })
+vim.api.nvim_set_keymap("i", "<CR>", "compe#confirm('<CR>')", { silent = true, expr = true })
+
 -- Use <Tab> and <S-Tab> to navigate through popup menu
 vim.api.nvim_set_keymap('i', '<Tab>', 'v:lua.tab_completion()', {expr = true, noremap = true})
 vim.api.nvim_set_keymap('i', '<S-Tab>', 'v:lua.s_tab_completion()', {expr = true, noremap = true})
-
--- Set completeopt to have a better completion experience
-vim.o.completeopt = "menuone,noinsert"
-
-vim.g.completion_enable_auto_paren = 1
-vim.g.completion_trigger_character = { "." }
-
-vim.api.nvim_exec([[
-	autocmd BufEnter * lua require'completion'.on_attach()
-]], false)
-
--- Avoid showing message extra message when using completion
--- vim.o.shortmess = "shmc"
-vim.api.nvim_exec([[
-	set shortmess+=c
-]], false)
-
--- map <C-Space> to manually trigger completion
-vim.api.nvim_set_keymap("i", "<C-Space>", "<Plug>(completion_trigger)", { silent = true })
 
 require('lspkind').init({
     -- enables text annotations

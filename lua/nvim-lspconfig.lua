@@ -3,9 +3,9 @@ local on_attach = function(client, bufnr)
 	print("LSP started")
 
     local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
-    local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+    -- local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
 
-    buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+    -- buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
 
     -- Mappings.
     local opts = { noremap=true, silent=true }
@@ -34,7 +34,6 @@ local on_attach = function(client, bufnr)
 
     -- Set autocommands conditional on server_capabilities
     if client.resolved_capabilities.document_highlight then
-		print("supports highlighting")
         vim.api.nvim_exec([[
         augroup lsp_document_highlight
 			autocmd! * <buffer>
@@ -121,10 +120,21 @@ local function setup_servers()
 						lintStdin = true,
 						lintFormats = { "%f:%l:%c: %m" },
 					}},
-					typescriptreact = {{
-						rootMarkers = { "package.json" },
-						formatCommand = "./node_modules/.bin/prettier"
-					}}
+					typescriptreact = {
+						{
+							rootMarkers = { "package.json" },
+							lintCommand = "eslint_d -f unix --stdin --stdin-filename ${INPUT}",
+							lintIgnoreExitCode = true,
+							lintStdin = true,
+							lintFormats = {"%f:%l:%c: %m"},
+							formatCommand = "eslint_d --fix-to-stdout --stdin --stdin-filename=${INPUT}",
+							formatStdin = true
+						},
+						{
+							rootMarkers = { "package.json" },
+							formatCommand = "./node_modules/.bin/prettier"
+						}
+					}
 				}
 			}
 		end
