@@ -1,11 +1,18 @@
+vim.api.nvim_exec([[
+	imap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
+	smap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
+	imap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
+	smap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
+]], false)
+
 -- keymaps
 local on_attach = function(client, bufnr)
-	print("LSP started")
-
     local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
     -- local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
 
     -- buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+	require("lsp_signature").on_attach()
 
     -- Mappings.
     local opts = { noremap=true, silent=true }
@@ -18,6 +25,7 @@ local on_attach = function(client, bufnr)
     buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
     buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
     buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+	buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
     buf_set_keymap('n', '<F2>', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
     buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
     buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
@@ -28,11 +36,20 @@ local on_attach = function(client, bufnr)
     -- Set some keybinds conditional on server capabilities
     if client.resolved_capabilities.document_formatting then
         buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+		vim.api.nvim_exec([[
+			augroup Format
+				autocmd! * <buffer>
+				autocmd BufWritePost <buffer> lua vim.lsp.buf.formatting()
+			augroup END
+		]], false)
     elseif client.resolved_capabilities.document_range_formatting then
         buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
-    end
-
-    -- Set autocommands conditional on server_capabilities
+		vim.api.nvim_exec([[
+			augroup Format
+				autocmd! * <buffer>
+				autocmd BufWritePost <buffer> lua vim.lsp.buf.formatting()
+			augroup END
+		]], false) end -- Set autocommands conditional on server_capabilities
     if client.resolved_capabilities.document_highlight then
         vim.api.nvim_exec([[
         augroup lsp_document_highlight
@@ -42,6 +59,18 @@ local on_attach = function(client, bufnr)
         augroup END
         ]], false)
     end
+end
+
+-- config that activates keymaps and enables snippet support
+local function make_config()
+    local capabilities = vim.lsp.protocol.make_client_capabilities()
+    capabilities.textDocument.completion.completionItem.snippetSupport = true
+    return {
+        -- enable snippet support
+        capabilities = capabilities,
+        -- map buffer local keybindings when the language server attaches
+        on_attach = on_attach,
+    }
 end
 
 -- Configure lua language server for neovim development
@@ -66,24 +95,28 @@ local lua_settings = {
     }
 }
 
--- config that activates keymaps and enables snippet support
-local function make_config()
-    local capabilities = vim.lsp.protocol.make_client_capabilities()
-    capabilities.textDocument.completion.completionItem.snippetSupport = true
-    return {
-        -- enable snippet support
-        capabilities = capabilities,
-        -- map buffer local keybindings when the language server attaches
-        on_attach = on_attach,
-    }
-end
+local eslint = {
+	rootMarkers = { "package.json" },
+	lintCommand = "eslint_d -f unix --stdin --stdin-filename ${INPUT}",
+	lintIgnoreExitCode = true,
+	lintStdin = true,
+	lintFormats = {"%f:%l:%c: %m"},
+	formatCommand = "eslint_d --fix-to-stdout --stdin --stdin-filename=${INPUT}",
+	formatStdin = true
+}
+
+local prettier = {
+	rootMarkers = { "package.json" },
+	formatCommand = "./node_modules/.bin/prettier"
+}
 
 -- lsp-install
 local function setup_servers()
     require("lspinstall").setup()
 
     -- get all installed servers
-    local servers = require'lspinstall'.installed_servers()
+    local servers = require("lspinstall").installed_servers()
+
     -- ... and add manually installed servers
     table.insert(servers, "clangd")
     table.insert(servers, "sourcekit")
@@ -104,11 +137,33 @@ local function setup_servers()
             config.filetypes = {"c", "cpp"}; -- we don't want objective-c and objective-cpp!
         end
 
+		if server == "go" then
+			config.on_attach = function(client, bufnr)
+				client.resolved_capabilities.document_formatting = false
+				on_attach(client, bufnr)
+			end
+		end
+
+		if server == "typescript" then
+			config.on_attach = function(client, bufnr)
+				client.resolved_capabilities.document_formatting = false
+				on_attach(client, bufnr)
+			end
+		end
+
 		if server == "efm" then
 			config.init_options = { documentFormatting = true }
 			config.filetypes = {
 				"go",
-				"typescriptreact"
+				"javascript",
+				"javascriptreact",
+				"typescript",
+				"typescriptreact",
+				"html",
+				"css",
+				"json",
+				"yaml",
+				"markdown"
 			}
 			config.settings = {
 				languages = {
@@ -120,21 +175,15 @@ local function setup_servers()
 						lintStdin = true,
 						lintFormats = { "%f:%l:%c: %m" },
 					}},
-					typescriptreact = {
-						{
-							rootMarkers = { "package.json" },
-							lintCommand = "eslint_d -f unix --stdin --stdin-filename ${INPUT}",
-							lintIgnoreExitCode = true,
-							lintStdin = true,
-							lintFormats = {"%f:%l:%c: %m"},
-							formatCommand = "eslint_d --fix-to-stdout --stdin --stdin-filename=${INPUT}",
-							formatStdin = true
-						},
-						{
-							rootMarkers = { "package.json" },
-							formatCommand = "./node_modules/.bin/prettier"
-						}
-					}
+					javascript = { eslint, prettier },
+					javascriptreact = { eslint, prettier },
+					typescript = { eslint, prettier },
+					typescriptreact = { eslint, prettier },
+					html = { prettier },
+					css = { prettier },
+					json = { prettier },
+					yaml = { prettier },
+					markdown = { prettier }
 				}
 			}
 		end
@@ -157,3 +206,5 @@ vim.fn.sign_define("LspDiagnosticsSignWarning", {text = "", numhl = "LspDiagn
 vim.fn.sign_define("LspDiagnosticsSignInformation", {text = "", numhl = "LspDiagnosticsDefaultInformation"})
 vim.fn.sign_define("LspDiagnosticsSignHint", {text = "", numhl = "LspDiagnosticsDefaultHint"})
 
+-- lsp diagnostics window
+require("trouble").setup()

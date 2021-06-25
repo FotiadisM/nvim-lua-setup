@@ -67,3 +67,5 @@ vim.api.nvim_set_keymap("n", "<leader>fp", [[<cmd>lua require('telescope').exten
 vim.api.nvim_set_keymap("n", "<leader>fb", [[<cmd>lua require('telescope.builtin').buffers()<CR>]], opt)
 vim.api.nvim_set_keymap("n", "<leader>fh", [[<cmd>lua require('telescope.builtin').help_tags()<CR>]], opt)
 vim.api.nvim_set_keymap("n", "<leader>fo", [[<cmd>lua require('telescope.builtin').oldfiles()<CR>]], opt)
+vim.api.nvim_set_keymap("n", "<leader>fd", [[<cmd>lua require('telescope.builtin').lsp_document_diagnostics()<CR>]], opt)
+vim.api.nvim_set_keymap("n", "<leader>fw", [[<cmd>lua require('telescope.builtin').lsp_workspace_diagnostics()<CR>]], opt)
