@@ -53,6 +53,9 @@ vim.o.signcolumn = "yes"
 vim.o.hidden = true
 vim.o.cmdheight = 1
 
+-- dashboard
+vim.g.dashboard_default_executive = "telescope"
+
 -- remove all format option, the autocmd is needed because option is being overwritten
 vim.api.nvim_exec([[
 	autocmd BufEnter * lua vim.o.formatoptions = ""
@@ -62,10 +65,10 @@ vim.api.nvim_exec([[
 vim.api.nvim_set_keymap("i", "jj", "<Esc>", { noremap = true })
 vim.api.nvim_set_keymap("n", "<C-s>", ":w<CR>", { noremap = true})
 vim.api.nvim_set_keymap("i", "<C-s>", "<Esc>:w<CR>a", { noremap = true })
--- close current buffer and jump to the previous one
-vim.api.nvim_set_keymap("n", "<C-w>", ":e#<CR>:bd#<CR>", { noremap = true })
 
 local opt = { noremap = true, silent = true}
+-- close current buffer and jump to the previous one
+vim.api.nvim_set_keymap("n", "<C-w>", ":e#<CR>:bd#<CR>", opt)
 
 -- moving between windows
 vim.api.nvim_set_keymap("n", "<C-h>", "<C-w>h", opt)

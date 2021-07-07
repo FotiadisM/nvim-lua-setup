@@ -7,6 +7,7 @@ return packer.startup(
 
 		-- theme
 		-- use "norcalli/nvim-base16.lua"
+		-- use "folke/tokyonight.nvim"
 		use "marko-cerovac/material.nvim"
 
 		use { "akinsho/nvim-bufferline.lua", requires = "kyazdani42/nvim-web-devicons" }
@@ -16,7 +17,8 @@ return packer.startup(
 		use "kyazdani42/nvim-tree.lua"
 		use {
 			"nvim-telescope/telescope.nvim",
-			requires = { "nvim-lua/popup.nvim", "nvim-lua/plenary.nvim" }}
+			requires = { "nvim-lua/popup.nvim", "nvim-lua/plenary.nvim" }
+		}
 		use "nvim-telescope/telescope-media-files.nvim"
 
 		-- language
@@ -31,6 +33,7 @@ return packer.startup(
 		-- snippets
 		-- use "norcalli/snippets.nvim"
         use "hrsh7th/vim-vsnip"
+		use "hrsh7th/vim-vsnip-integ"
 		use "rafamadriz/friendly-snippets"
 
 		-- git
@@ -40,7 +43,8 @@ return packer.startup(
 		use "norcalli/nvim-colorizer.lua"
 		use "karb94/neoscroll.nvim"
 		use "windwp/nvim-autopairs"
-		use { "lukas-reineke/indent-blankline.nvim", branch = "lua" }
+		use "lukas-reineke/indent-blankline.nvim"
 		use "folke/which-key.nvim"
+		use "glepnir/dashboard-nvim"
 	end
 )
