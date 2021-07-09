@@ -5,17 +5,53 @@ vim.api.nvim_exec([[
 	smap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
 ]], false)
 
+vim.lsp.handlers["textDocument/hover"] =
+	vim.lsp.with(
+	vim.lsp.handlers.hover,
+	{
+		border = "single"
+	}
+)
+
+vim.lsp.handlers["textDocument/signatureHelp"] =
+	vim.lsp.with(
+	vim.lsp.handlers.signature_help,
+	{
+		border = "single"
+	}
+)
+
+local lspSignatureCfg = {
+	bind = true, -- This is mandatory, otherwise border config won't get registered.
+				 -- If you want to hook lspsaga or other signature handler, pls set to false
+	doc_lines = 2, -- will show two lines of comment/doc(if there are more than two lines in doc, will be truncated);
+                   -- set to 0 if you DO NOT want any API comments be shown
+                   -- This setting only take effect in insert mode, it does not affect signature help in normal
+                   -- mode, 10 by default
+
+	floating_window = true, -- show hint in a floating window, set to false for virtual text only mode
+	fix_pos = false,  -- set to true, the floating window will not auto-close until finish all parameters
+	hint_enable = false, -- virtual hint enable
+	use_lspsaga = false,  -- set to true if you want to use lspsaga popup
+	hi_parameter = "Search", -- how your parameter will be highlight
+	max_height = 12, -- max height of signature floating_window, if content is more than max_height, you can scroll down
+					 -- to view the hiding contents
+	max_width = 120, -- max_width of signature floating_window, line will be wrapped if exceed max_width
+	handler_opts = {
+		border = "single"   -- double, single, shadow, none
+	},
+	extra_trigger_chars = {} -- Array of extra characters that will trigger signature completion, e.g., {"(", ","}
+}
+
 -- keymaps
 local on_attach = function(client, bufnr)
     local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
     -- local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
 
-    -- buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
-
-	require("lsp_signature").on_attach()
+	require("lsp_signature").on_attach(lspSignatureCfg)
 
     -- Mappings.
-    local opts = { noremap=true, silent=true }
+    local opts = { noremap = true, silent = true }
     buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
     buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
     buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
@@ -121,6 +157,8 @@ local function setup_servers()
     table.insert(servers, "clangd")
     table.insert(servers, "sourcekit")
 
+	-- print(vim.inspect(servers))
+
     for _, server in pairs(servers) do
         local config = make_config()
 
@@ -136,6 +174,25 @@ local function setup_servers()
         if server == "clangd" then
             config.filetypes = {"c", "cpp"}; -- we don't want objective-c and objective-cpp!
         end
+
+		if server == "latex" then
+			config.settings = {
+				texlab = {
+					diagnosticsDelay = 100,
+					build = {
+					  	onSave = true,
+						args = {
+							"-synctex=1",
+							"-interaction=nonstopmode",
+							"-file-line-error",
+							"-pdf",
+							"-outdir=build",
+							"%f"
+						},
+					},
+				}
+			}
+		end
 
 		if server == "go" then
 			config.on_attach = function(client, bufnr)

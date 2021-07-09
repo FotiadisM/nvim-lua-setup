@@ -9,7 +9,6 @@ return packer.startup(
 		-- use "norcalli/nvim-base16.lua"
 		-- use "folke/tokyonight.nvim"
 		use "marko-cerovac/material.nvim"
-
 		use { "akinsho/nvim-bufferline.lua", requires = "kyazdani42/nvim-web-devicons" }
 		use { "glepnir/galaxyline.nvim"}
 

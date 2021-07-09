@@ -34,8 +34,12 @@ vim.g.indent_blankline_show_first_indent_level = false
 vim.g.indent_blankline_show_trailing_blankline_indent = false
 vim.g.indent_blankline_filetype_exclude = {"help", "terminal"}
 
+-- dashboard
+vim.g.dashboard_default_executive = "telescope"
+
 -- General settings
 vim.cmd("syntax on")
+vim.o.wrap = false
 vim.o.relativenumber = true
 vim.o.incsearch = true
 vim.o.hlsearch = false
@@ -52,9 +56,6 @@ vim.o.termguicolors = true
 vim.o.signcolumn = "yes"
 vim.o.hidden = true
 vim.o.cmdheight = 1
-
--- dashboard
-vim.g.dashboard_default_executive = "telescope"
 
 -- remove all format option, the autocmd is needed because option is being overwritten
 vim.api.nvim_exec([[
