@@ -10,7 +10,7 @@ return packer.startup(
 		-- use "folke/tokyonight.nvim"
 		use "marko-cerovac/material.nvim"
 		use { "akinsho/nvim-bufferline.lua", requires = "kyazdani42/nvim-web-devicons" }
-		use { "glepnir/galaxyline.nvim"}
+		use "glepnir/galaxyline.nvim"
 
 		-- file managing, etc
 		use "kyazdani42/nvim-tree.lua"
@@ -39,6 +39,7 @@ return packer.startup(
 		use { "lewis6991/gitsigns.nvim", requires = "nvim-lua/plenary.nvim" }
 
 		-- misc
+		use "akinsho/nvim-toggleterm.lua"
 		use "norcalli/nvim-colorizer.lua"
 		use "karb94/neoscroll.nvim"
 		use "windwp/nvim-autopairs"

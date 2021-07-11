@@ -22,6 +22,8 @@ require("compe-nvim")
 require("gitsigns-nvim")
 
 -- misc
+-- require("terminal")
+require("toggleterm").setup()
 require("neoscroll").setup()
 require("nvim-autopairs").setup()
 require("colorizer").setup()
@@ -86,8 +88,5 @@ vim.api.nvim_set_keymap("n", "<C-Right>", ":vertical resize -3<CR>", opt)
 -- copy to clipboard
 vim.api.nvim_set_keymap("", "<C-c>", "\"+y", opt)
 
-vim.api.nvim_exec([[
-	command! Vt :vs term://zsh
-	command! T :sp term://zsh
-]], false)
-
+vim.api.nvim_set_keymap("n", "<leader>t", ":ToggleTerm<CR>", opt)
+vim.api.nvim_set_keymap("n", "<leader>T", ":ToggleTerm direction='float'<CR>", opt)

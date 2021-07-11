@@ -265,4 +265,4 @@ vim.fn.sign_define("LspDiagnosticsSignHint", {text = "", numhl = "LspDiagnost
 
 -- lsp diagnostics window
 require("trouble").setup()
-vim.api.nvim_set_keymap("n", "<leader>t", ":LspTroubleWorkspaceToggle<CR>", { noremap = true, silent = true, })
+vim.api.nvim_set_keymap("n", "<leader>w", ":LspTroubleWorkspaceToggle<CR>", { noremap = true, silent = true, })
