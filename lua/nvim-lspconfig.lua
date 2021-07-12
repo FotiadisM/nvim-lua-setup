@@ -176,6 +176,10 @@ local function setup_servers()
         end
 
 		if server == "latex" then
+			config.on_attach = function(client, bufnr)
+				client.resolved_capabilities.document_formatting = false
+				on_attach(client, bufnr)
+			end
 			config.settings = {
 				texlab = {
 					diagnosticsDelay = 100,
@@ -220,7 +224,8 @@ local function setup_servers()
 				"css",
 				"json",
 				"yaml",
-				"markdown"
+				"markdown",
+				"tex",
 			}
 			config.settings = {
 				languages = {
@@ -240,7 +245,12 @@ local function setup_servers()
 					css = { prettier },
 					json = { prettier },
 					yaml = { prettier },
-					markdown = { prettier }
+					markdown = { prettier },
+					tex = {{
+						rootMarkers = { "main.tex" },
+						formatCommand = "latexindent",
+						formatStdin = true,
+					}},
 				}
 			}
 		end

@@ -6,7 +6,12 @@ vim.g.material_contrast = true
 vim.g.material_hide_eob = true
 require("material").set()
 require "top-bufferline"
-require "statusline"
+require("lualine").setup({
+	options = {
+		theme = "material",
+	},
+	extensions = { "nvim-tree" }
+})
 
 -- file managing
 require("nvimTree")
@@ -22,12 +27,13 @@ require("compe-nvim")
 require("gitsigns-nvim")
 
 -- misc
--- require("terminal")
+require("surround").setup({})
 require("toggleterm").setup()
 require("neoscroll").setup()
 require("nvim-autopairs").setup()
 require("colorizer").setup()
 require("which-key").setup()
+require("nvim_comment").setup({ create_mappings = false })
 
 -- indent-blankline
 vim.g.indent_blankline_char = "│"
@@ -71,7 +77,7 @@ vim.api.nvim_set_keymap("i", "<C-s>", "<Esc>:w<CR>a", { noremap = true })
 
 local opt = { noremap = true, silent = true}
 -- close current buffer and jump to the previous one
-vim.api.nvim_set_keymap("n", "<C-w>", ":e#<CR>:bd#<CR>", opt)
+vim.api.nvim_set_keymap("n", "<leader>q", ":bp<bar>sp<bar>bn<bar>bd<CR>", opt)
 
 -- moving between windows
 vim.api.nvim_set_keymap("n", "<C-h>", "<C-w>h", opt)
@@ -88,5 +94,9 @@ vim.api.nvim_set_keymap("n", "<C-Right>", ":vertical resize -3<CR>", opt)
 -- copy to clipboard
 vim.api.nvim_set_keymap("", "<C-c>", "\"+y", opt)
 
+-- terminal
 vim.api.nvim_set_keymap("n", "<leader>t", ":ToggleTerm<CR>", opt)
 vim.api.nvim_set_keymap("n", "<leader>T", ":ToggleTerm direction='float'<CR>", opt)
+
+vim.api.nvim_set_keymap("n", "<leader>c", ":CommentToggle<CR>", opt)
+vim.api.nvim_set_keymap("v", "<leader>c", ":CommentToggle<CR>", opt)
