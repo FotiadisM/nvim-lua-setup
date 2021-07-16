@@ -1,14 +1,17 @@
 require("pluginList")
 
 -- theme
-vim.g.material_style = "deep ocean"
-vim.g.material_contrast = true
-vim.g.material_hide_eob = true
-require("material").set()
+-- vim.g.material_style = "deep ocean"
+-- vim.g.material_contrast = true
+-- vim.g.material_hide_eob = true
+-- require("material").set()
+vim.g.tokyonight_style = "night"
+vim.cmd[[colorscheme tokyonight]]
 require "top-bufferline"
 require("lualine").setup({
 	options = {
-		theme = "material",
+		-- theme = "material",
+		theme = "tokyonight",
 	},
 	extensions = { "nvim-tree" }
 })
@@ -34,6 +37,7 @@ require("nvim-autopairs").setup()
 require("colorizer").setup()
 require("which-key").setup()
 require("nvim_comment").setup({ create_mappings = false })
+require("todo-comments").setup()
 
 -- indent-blankline
 vim.g.indent_blankline_char = "│"
@@ -76,6 +80,7 @@ vim.api.nvim_set_keymap("n", "<C-s>", ":w<CR>", { noremap = true})
 vim.api.nvim_set_keymap("i", "<C-s>", "<Esc>:w<CR>a", { noremap = true })
 
 local opt = { noremap = true, silent = true}
+
 -- close current buffer and jump to the previous one
 vim.api.nvim_set_keymap("n", "<leader>q", ":bp<bar>sp<bar>bn<bar>bd<CR>", opt)
 
@@ -98,5 +103,17 @@ vim.api.nvim_set_keymap("", "<C-c>", "\"+y", opt)
 vim.api.nvim_set_keymap("n", "<leader>t", ":ToggleTerm<CR>", opt)
 vim.api.nvim_set_keymap("n", "<leader>T", ":ToggleTerm direction='float'<CR>", opt)
 
+-- commenting
 vim.api.nvim_set_keymap("n", "<leader>c", ":CommentToggle<CR>", opt)
 vim.api.nvim_set_keymap("v", "<leader>c", ":CommentToggle<CR>", opt)
+
+if not vim.o.spell == true then
+	print("hello there")
+end
+
+-- disable ex mode
+vim.api.nvim_set_keymap("n", "Q", "<nop>", opt)
+vim.api.nvim_set_keymap("n", "q:", "<nop>", opt)
+
+-- toggle spelling
+vim.api.nvim_set_keymap("n", "<leader>s", ":set spell!<CR>", opt)

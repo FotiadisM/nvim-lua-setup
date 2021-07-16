@@ -7,8 +7,8 @@ return packer.startup(
 
 		-- theme
 		-- use "norcalli/nvim-base16.lua"
-		-- use "folke/tokyonight.nvim"
-		use "marko-cerovac/material.nvim"
+		-- use "marko-cerovac/material.nvim"
+		use "folke/tokyonight.nvim"
 		use { "akinsho/nvim-bufferline.lua", requires = "kyazdani42/nvim-web-devicons" }
 		use "hoob3rt/lualine.nvim"
 
@@ -36,6 +36,11 @@ return packer.startup(
 		use "hrsh7th/vim-vsnip-integ"
 		use "rafamadriz/friendly-snippets"
 
+		-- debugging
+		-- use "mfussenegger/nvim-dap"
+		-- use "theHamsta/nvim-dap-virtual-text"
+		-- use "rcarriga/nvim-dap-ui"
+
 		-- git
 		use { "lewis6991/gitsigns.nvim", requires = "nvim-lua/plenary.nvim" }
 
@@ -50,5 +55,6 @@ return packer.startup(
 		use "lukas-reineke/indent-blankline.nvim"
 		use "folke/which-key.nvim"
 		use "glepnir/dashboard-nvim"
+		use { "folke/todo-comments.nvim", requires = "nvim-lua/plenary.nvim" }
 	end
 )
