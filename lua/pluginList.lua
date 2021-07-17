@@ -29,6 +29,7 @@ return packer.startup(
 		use "ray-x/lsp_signature.nvim"
 		use { "folke/trouble.nvim", requires = "kyazdani42/nvim-web-devicons" }
 		use "simrat39/symbols-outline.nvim"
+		use "kosayoda/nvim-lightbulb"
 
 		-- snippets
 		-- use "norcalli/snippets.nvim"
@@ -58,5 +59,6 @@ return packer.startup(
 		use "folke/which-key.nvim"
 		use "glepnir/dashboard-nvim"
 		use { "folke/todo-comments.nvim", requires = "nvim-lua/plenary.nvim" }
+		use "windwp/nvim-spectre"
 	end
 )

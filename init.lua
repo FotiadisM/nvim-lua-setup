@@ -38,6 +38,7 @@ require("colorizer").setup()
 require("which-key").setup()
 require("nvim_comment").setup({ create_mappings = false })
 require("todo-comments").setup()
+require("spectre").setup()
 
 -- indent-blankline
 vim.g.indent_blankline_char = "│"
@@ -117,3 +118,6 @@ vim.api.nvim_set_keymap("n", "q:", "<nop>", opt)
 
 -- toggle spelling
 vim.api.nvim_set_keymap("n", "<leader>s", ":set spell!<CR>", opt)
+
+-- open spectre
+vim.api.nvim_set_keymap("n", "<leader>S", ": lua require('spectre').open()<CR>", { noremap = true, silent = true })
