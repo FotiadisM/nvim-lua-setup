@@ -43,6 +43,8 @@ return packer.startup(
 
 		-- git
 		use { "lewis6991/gitsigns.nvim", requires = "nvim-lua/plenary.nvim" }
+		use "sindrets/diffview.nvim"
+
 
 		-- misc
 		use "famiu/nvim-reload"

@@ -27,7 +27,7 @@ require("nvim-lspconfig")
 require("compe-nvim")
 
 -- git
-require("gitsigns-nvim")
+require("git")
 
 -- misc
 require("surround").setup({})
