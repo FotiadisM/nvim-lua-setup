@@ -248,7 +248,7 @@ local function setup_servers()
 					markdown = { prettier },
 					tex = {{
 						rootMarkers = { "main.tex" },
-						formatCommand = "latexindent",
+						formatCommand = "latexindent -g /dev/null",
 						formatStdin = true,
 					}},
 				}
