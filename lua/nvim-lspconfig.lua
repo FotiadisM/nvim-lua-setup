@@ -85,7 +85,9 @@ local on_attach = function(client, bufnr)
 				autocmd! * <buffer>
 				autocmd BufWritePost <buffer> lua vim.lsp.buf.formatting()
 			augroup END
-		]], false) end -- Set autocommands conditional on server_capabilities
+		]], false)
+	end
+
     if client.resolved_capabilities.document_highlight then
         vim.api.nvim_exec([[
         augroup lsp_document_highlight
@@ -143,7 +145,16 @@ local eslint = {
 
 local prettier = {
 	rootMarkers = { "package.json" },
-	formatCommand = "./node_modules/.bin/prettier"
+	-- formatCommand = "./node_modules/.bin/prettier",
+	formatCommand = (
+		function()
+			if not vim.fn.empty(vim.loop.cwd() .. '/node_modules/.bin/prettier') then
+				return "./node_modules/.bin/prettier"
+			end
+
+			return "prettier"
+		end
+  	)()
 }
 
 -- lsp-install
@@ -153,10 +164,6 @@ local function setup_servers()
     -- get all installed servers
     local servers = require("lspinstall").installed_servers()
 
-    -- ... and add manually installed servers
-    table.insert(servers, "clangd")
-    table.insert(servers, "sourcekit")
-
 	-- print(vim.inspect(servers))
 
     for _, server in pairs(servers) do
@@ -165,14 +172,6 @@ local function setup_servers()
         -- language specific config
         if server == "lua" then
             config.settings = lua_settings
-        end
-
-        if server == "sourcekit" then
-            config.filetypes = {"swift", "objective-c", "objective-cpp"}; -- we don't want c and cpp!
-        end
-
-        if server == "clangd" then
-            config.filetypes = {"c", "cpp"}; -- we don't want objective-c and objective-cpp!
         end
 
 		if server == "latex" then
@@ -198,6 +197,13 @@ local function setup_servers()
 			}
 		end
 
+		if server == "html" then
+			config.on_attach = function(client, bufnr)
+				client.resolved_capabilities.document_formatting = false
+				on_attach(client, bufnr)
+			end
+		end
+
 		if server == "go" then
 			config.on_attach = function(client, bufnr)
 				client.resolved_capabilities.document_formatting = false
@@ -214,6 +220,11 @@ local function setup_servers()
 
 		if server == "efm" then
 			config.init_options = { documentFormatting = true }
+			config.on_attach = function(client, bufnr)
+				client.resolved_capabilities.rename = false
+				client.resolved_capabilities.hover = false
+				on_attach(client, bufnr)
+			end
 			config.filetypes = {
 				"go",
 				"javascript",
