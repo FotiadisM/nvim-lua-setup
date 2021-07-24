@@ -48,6 +48,14 @@ return packer.startup(
 			end
 		}
 		use {
+			"RRethy/nvim-treesitter-textsubjects",
+			requires = "nvim-treesitter/nvim-treesitter"
+		}
+		use {
+			"RRethy/nvim-treesitter-textobjects",
+			requires = "nvim-treesitter/nvim-treesitter"
+		}
+		use {
 			"neovim/nvim-lspconfig",
 			config = function()
 				require("lsp.lspconfig")
