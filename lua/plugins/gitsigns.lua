@@ -1,4 +1,4 @@
-require('gitsigns').setup {
+require("gitsigns").setup({
     signs = {
         add          = {hl = 'GitSignsAdd'   , text = '│', numhl='GitSignsAddNr'   , linehl='GitSignsAddLn'},
         change       = {hl = 'GitSignsChange', text = '│', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
@@ -19,7 +19,6 @@ require('gitsigns').setup {
         ['n <leader>hs'] = '<cmd>lua require"gitsigns".stage_hunk()<CR>',
         ['n <leader>hu'] = '<cmd>lua require"gitsigns".undo_stage_hunk()<CR>',
         ['n <leader>hr'] = '<cmd>lua require"gitsigns".reset_hunk()<CR>',
-        ['n <leader>hR'] = '<cmd>lua require"gitsigns".reset_buffer()<CR>',
         ['n <leader>hp'] = '<cmd>lua require"gitsigns".preview_hunk()<CR>',
         ['n <leader>hb'] = '<cmd>lua require"gitsigns".blame_line(true)<CR>',
 
@@ -38,7 +37,5 @@ require('gitsigns').setup {
     status_formatter = nil, -- Use default
     use_decoration_api = true,
     use_internal_diff = true,  -- If luajit is present
-}
-
-require("diffview").setup()
+})
 

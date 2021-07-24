@@ -8,12 +8,5 @@ vim.g.nvim_tree_width_allow_resize  = 0 -- 0 by default, will not resize the tre
 vim.g.nvim_tree_group_empty = 1 --  0 by default, compact folders that only contain a single folder into one node in the file tree
 vim.g.nvim_tree_lsp_diagnostics = 1 -- 0 by default, will show lsp diagnostics in the signcolumn. See :help nvim_tree_lsp_diagnostics
 vim.g.nvim_tree_update_cwd = 1 -- 0 by default, will update the tree cwd when changing nvim's directory (DirChanged event). Behaves strangely with autochdir set.
-vim.g.nvim_tree_special_files = {}
-
-vim.api.nvim_set_keymap("n", "<leader>b", ":NvimTreeToggle<CR>", { noremap = true, silent = true })
-
--- if nvim starts with a directory as an argument, cd into it and open NvimTree
-vim.api.nvim_exec([[
-	autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) | execute 'cd '.argv()[0] | execute 'NvimTreeOpen' | wincmd l | endif
-]], false)
+vim.g.nvim_tree_special_files = {} -- clear special files
 

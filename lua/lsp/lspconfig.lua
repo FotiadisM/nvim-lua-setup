@@ -1,20 +1,11 @@
-vim.api.nvim_exec([[
-	imap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
-	smap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
-	imap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
-	smap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
-]], false)
-
-vim.lsp.handlers["textDocument/hover"] =
-	vim.lsp.with(
+vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
 	vim.lsp.handlers.hover,
 	{
 		border = "single"
 	}
 )
 
-vim.lsp.handlers["textDocument/signatureHelp"] =
-	vim.lsp.with(
+vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
 	vim.lsp.handlers.signature_help,
 	{
 		border = "single"
@@ -111,52 +102,6 @@ local function make_config()
     }
 end
 
--- Configure lua language server for neovim development
-local lua_settings = {
-    Lua = {
-        runtime = {
-            -- LuaJIT in the case of Neovim
-            version = "LuaJIT",
-            path = vim.split(package.path, ';'),
-        },
-        diagnostics = {
-            -- Get the language server to recognize the `vim` global
-            globals = {"vim"},
-        },
-        workspace = {
-            -- Make the server aware of Neovim runtime files
-            library = {
-                [vim.fn.expand("$VIMRUNTIME/lua")] = true,
-                [vim.fn.expand("$VIMRUNTIME/lua/vim/lsp")] = true,
-            },
-        },
-    }
-}
-
-local eslint = {
-	rootMarkers = { "package.json" },
-	lintCommand = "eslint_d -f unix --stdin --stdin-filename ${INPUT}",
-	lintIgnoreExitCode = true,
-	lintStdin = true,
-	lintFormats = {"%f:%l:%c: %m"},
-	formatCommand = "eslint_d --fix-to-stdout --stdin --stdin-filename=${INPUT}",
-	formatStdin = true
-}
-
-local prettier = {
-	rootMarkers = { "package.json" },
-	-- formatCommand = "./node_modules/.bin/prettier",
-	formatCommand = (
-		function()
-			if not vim.fn.empty(vim.loop.cwd() .. '/node_modules/.bin/prettier') then
-				return "./node_modules/.bin/prettier"
-			end
-
-			return "prettier"
-		end
-  	)()
-}
-
 -- lsp-install
 local function setup_servers()
     require("lspinstall").setup()
@@ -164,109 +109,35 @@ local function setup_servers()
     -- get all installed servers
     local servers = require("lspinstall").installed_servers()
 
-	-- print(vim.inspect(servers))
-
     for _, server in pairs(servers) do
         local config = make_config()
 
         -- language specific config
         if server == "lua" then
-            config.settings = lua_settings
+			config = require("lsp.servers.lua").setup(config, on_attach)
         end
 
 		if server == "latex" then
-			config.on_attach = function(client, bufnr)
-				client.resolved_capabilities.document_formatting = false
-				on_attach(client, bufnr)
-			end
-			config.settings = {
-				texlab = {
-					diagnosticsDelay = 100,
-					build = {
-					  	onSave = true,
-						args = {
-							"-synctex=1",
-							"-interaction=nonstopmode",
-							"-file-line-error",
-							"-pdf",
-							"-outdir=build",
-							"%f"
-						},
-					},
-				}
-			}
+			config = require("lsp.servers.latex").setup(config, on_attach)
 		end
 
 		if server == "html" then
-			config.on_attach = function(client, bufnr)
-				client.resolved_capabilities.document_formatting = false
-				on_attach(client, bufnr)
-			end
+			config = require("lsp.servers.html").setup(config, on_attach)
 		end
 
 		if server == "go" then
-			config.on_attach = function(client, bufnr)
-				client.resolved_capabilities.document_formatting = false
-				on_attach(client, bufnr)
-			end
+			config = require("lsp.servers.go").setup(config, on_attach)
 		end
 
 		if server == "typescript" then
-			config.on_attach = function(client, bufnr)
-				client.resolved_capabilities.document_formatting = false
-				on_attach(client, bufnr)
-			end
+			config = require("lsp.servers.typescript").setup(config, on_attach)
 		end
 
 		if server == "efm" then
-			config.init_options = { documentFormatting = true }
-			config.on_attach = function(client, bufnr)
-				client.resolved_capabilities.rename = false
-				client.resolved_capabilities.hover = false
-				on_attach(client, bufnr)
-			end
-			config.filetypes = {
-				"go",
-				"javascript",
-				"javascriptreact",
-				"typescript",
-				"typescriptreact",
-				"html",
-				"css",
-				"json",
-				"yaml",
-				"markdown",
-				"tex",
-			}
-			config.settings = {
-				languages = {
-					go = {{
-						rootMarkers = { "go.mod" },
-						formatCommand = "goimports",
-						formatStdin = true,
-						lintCommand = "golint",
-						lintStdin = true,
-						lintFormats = { "%f:%l:%c: %m" },
-					}},
-					javascript = { eslint, prettier },
-					javascriptreact = { eslint, prettier },
-					typescript = { eslint, prettier },
-					typescriptreact = { eslint, prettier },
-					html = { prettier },
-					css = { prettier },
-					json = { prettier },
-					yaml = { prettier },
-					markdown = { prettier },
-					tex = {{
-						rootMarkers = { "main.tex" },
-						formatCommand = "latexindent -g /dev/null",
-						formatStdin = true,
-					}},
-				}
-			}
+			config = require("lsp.servers.efm").setup(config, on_attach)
 		end
 
-		require'lspconfig'[server].setup(config)
+		require("lspconfig")[server].setup(config)
     end
 end
 
@@ -283,11 +154,6 @@ vim.fn.sign_define("LspDiagnosticsSignError", {text = "", numhl = "LspDiagnos
 vim.fn.sign_define("LspDiagnosticsSignWarning", {text = "", numhl = "LspDiagnosticsDefaultWarning"})
 vim.fn.sign_define("LspDiagnosticsSignInformation", {text = "", numhl = "LspDiagnosticsDefaultInformation"})
 vim.fn.sign_define("LspDiagnosticsSignHint", {text = "", numhl = "LspDiagnosticsDefaultHint"})
-
--- lsp diagnostics window
-require("trouble").setup()
-vim.api.nvim_set_keymap("n", "<leader>ww", ":LspTroubleWorkspaceToggle<CR>", { noremap = true, silent = true, })
-vim.api.nvim_set_keymap("n", "<leader>wt", ":TodoTrouble<CR>", { noremap = true, silent = true, })
 
 -- show lightbulb when a code actions is available
 vim.cmd [[autocmd CursorHold,CursorHoldI * lua require'nvim-lightbulb'.update_lightbulb()]]
