@@ -92,10 +92,7 @@ return packer.startup(
 		use "kosayoda/nvim-lightbulb"
 
 		-- snippets
-		-- use "norcalli/snippets.nvim"
-        use { "hrsh7th/vim-vsnip", event = "InsertEnter" }
-		use { "hrsh7th/vim-vsnip-integ", event = "InsertEnter" }
-		use { "rafamadriz/friendly-snippets", event = "InsertEnter" }
+		use "L3MON4D3/LuaSnip"
 
 		-- debugging
 		-- use "mfussenegger/nvim-dap"
@@ -157,7 +154,6 @@ return packer.startup(
 		}
 		use {
 			"windwp/nvim-autopairs",
-			-- event = "InsertEnter",
 			after = "nvim-compe",
 			config = function()
 				require("plugins.nvim-autopairs")
@@ -182,6 +178,5 @@ return packer.startup(
 				require("todo-comments").setup()
 			end
 		}
-		-- use { "glepnir/dashboard-nvim", disable = true }
 	end
 )

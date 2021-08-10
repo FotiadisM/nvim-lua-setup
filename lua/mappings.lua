@@ -52,27 +52,6 @@ vim.api.nvim_set_keymap("n", "gT", ":BufferLineCyclePrev<CR>", opt)
 vim.api.nvim_set_keymap("n", "L", ":BufferLineCycleNext<CR>", opt)
 vim.api.nvim_set_keymap("n", "H", ":BufferLineCyclePrev<CR>", opt)
 
--- nvim-compe
-local t = function(str)
-    return vim.api.nvim_replace_termcodes(str, true, true, true)
-end
-
-function _G.tab_completion()
-    return vim.fn.pumvisible() == 1 and t('<Down>') or t('<Tab>')
-end
-
-function _G.s_tab_completion()
-    return vim.fn.pumvisible() == 1 and t('<Up>') or t('<S-Tab>')
-end
-
--- map <C-Space> to manually trigger completion
-vim.api.nvim_set_keymap("i", "<C-Space>", "compe#complete()", { silent = true, expr = true })
-vim.api.nvim_set_keymap("i", "<CR>", "compe#confirm('<CR>')", { silent = true, expr = true })
-
--- Use <Tab> and <S-Tab> to navigate through popup menu
-vim.api.nvim_set_keymap('i', '<Tab>', 'v:lua.tab_completion()', {expr = true, noremap = true})
-vim.api.nvim_set_keymap('i', '<S-Tab>', 'v:lua.s_tab_completion()', {expr = true, noremap = true})
-
 -- nvim-toggleterm
 vim.api.nvim_set_keymap("n", "<leader>t", ":ToggleTerm<CR>", opt)
 vim.api.nvim_set_keymap("n", "<leader>T", ":ToggleTerm direction='float'<CR>", opt)
