@@ -157,9 +157,10 @@ return packer.startup(
 		}
 		use {
 			"windwp/nvim-autopairs",
-			event = "InsertEnter",
+			-- event = "InsertEnter",
+			after = "nvim-compe",
 			config = function()
-				require("nvim-autopairs").setup()
+				require("plugins.nvim-autopairs")
 			end
 		}
 		use {
