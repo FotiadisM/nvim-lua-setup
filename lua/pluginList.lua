@@ -130,7 +130,10 @@ return packer.startup(
 			"terrortylor/nvim-comment",
 			cmd = "CommentToggle",
 			config = function()
-				require("nvim_comment").setup({ create_mappings = false })
+				require("nvim_comment").setup({
+					comment_empty = false,
+					create_mappings = false
+				})
 			end
 		}
 		use {
