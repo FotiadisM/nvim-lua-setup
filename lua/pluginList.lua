@@ -1,7 +1,7 @@
 local packer = require("packer")
 local use = packer.use
 
-return packer.startup(
+return packer.startup({
 	function()
 		use "wbthomason/packer.nvim"
 
@@ -61,7 +61,7 @@ return packer.startup(
 				require("lsp.lspconfig")
 			end
 		}
-        use "kabouzeid/nvim-lspinstall"
+		use "kabouzeid/nvim-lspinstall"
 		use {
 			"hrsh7th/nvim-compe",
 			event = "InsertEnter",
@@ -93,6 +93,10 @@ return packer.startup(
 
 		-- snippets
 		use "L3MON4D3/LuaSnip"
+		use {
+			"rafamadriz/friendly-snippets",
+			event = "InsertEnter"
+		}
 
 		-- debugging
 		-- use "mfussenegger/nvim-dap"
@@ -181,5 +185,11 @@ return packer.startup(
 				require("todo-comments").setup()
 			end
 		}
-	end
+	end,
+	config = {
+		profile = {
+			enable = true,
+			threshold = 1 -- the amount in ms that a plugins load time must be over for it to be included in the profile
+		}
+	}}
 )
