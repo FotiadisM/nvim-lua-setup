@@ -9,6 +9,7 @@ vim.api.nvim_set_keymap("n", "<leader>q", ":bp<bar>sp<bar>bn<bar>bd<CR>", opt)
 
 -- moving between windows
 vim.api.nvim_set_keymap("n", "<C-h>", "<C-w>h", opt)
+
 vim.api.nvim_set_keymap("n", "<C-j>", "<C-w>j", opt)
 vim.api.nvim_set_keymap("n", "<C-k>", "<C-w>k", opt)
 vim.api.nvim_set_keymap("n", "<C-l>", "<C-w>l", opt)
@@ -43,12 +44,10 @@ vim.api.nvim_set_keymap("n", "<C-p>", ":Telescope find_files<CR>", opt)
 vim.api.nvim_set_keymap("n", "<leader>fm", ":Telescope media_files<CR>", opt)
 vim.api.nvim_set_keymap("n", "<leader>fh", ":Telescope help_tags<CR>", opt)
 vim.api.nvim_set_keymap("n", "<leader>fc", ":Telescope commands<CR>", opt)
+vim.api.nvim_set_keymap("n", "<leader>fd", ":Telescope find_files cwd=~/.config/nvim<CR>", opt)
 vim.api.nvim_set_keymap("n", "<leader>ft", ":TodoTelescope<CR>", opt)
 
 -- bufferline
-vim.api.nvim_set_keymap("n", "gt", ":BufferLineCycleNext<CR>", opt)
-vim.api.nvim_set_keymap("n", "gT", ":BufferLineCyclePrev<CR>", opt)
-
 vim.api.nvim_set_keymap("n", "L", ":BufferLineCycleNext<CR>", opt)
 vim.api.nvim_set_keymap("n", "H", ":BufferLineCyclePrev<CR>", opt)
 
@@ -64,8 +63,16 @@ vim.api.nvim_set_keymap("v", "<leader>c", ":CommentToggle<CR>", opt)
 vim.api.nvim_set_keymap("n", "<leader>S", ":lua require('spectre').open()<CR>", opt)
 
 -- todo-comments
-vim.api.nvim_set_keymap("n", "<leader>wt", ":TodoQuickFix<CR>", { noremap = true, silent = true, })
+vim.api.nvim_set_keymap("n", "<leader>wt", ":TodoQuickFix<CR>", { noremap = true, silent = true })
 
 -- trouble
-vim.api.nvim_set_keymap("n", "<leader>ww", ":LspTroubleWorkspaceToggle<CR>", { noremap = true, silent = true, })
+vim.api.nvim_set_keymap("n", "<leader>ww", ":LspTroubleWorkspaceToggle<CR>", { noremap = true, silent = true })
+
+-- debuging
+vim.api.nvim_set_keymap("n", "<F5>", ":lua require('dap').continue()<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<F10>", ":lua require('dap').step_over()<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<F11>", ":lua require('dap').step_into()<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<F12>", ":lua require('dap').step_out()<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>du", ":lua require('dapui').toggle()<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>db", ":lua require('dap').toggle_breakpoint()<CR>", { noremap = true, silent = true })
 

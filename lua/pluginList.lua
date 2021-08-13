@@ -99,9 +99,22 @@ return packer.startup({
 		}
 
 		-- debugging
-		-- use "mfussenegger/nvim-dap"
+		use {
+			"mfussenegger/nvim-dap",
+			config = function()
+				require("dap")
+				vim.fn.sign_define("DapBreakpoint", {text='🛑', texthl='', linehl='', numhl=''})
+			end
+		}
 		-- use "theHamsta/nvim-dap-virtual-text"
-		-- use "rcarriga/nvim-dap-ui"
+		use {
+			"rcarriga/nvim-dap-ui",
+			requires = { "mfussenegger/nvim-dap" },
+			config = function()
+				require("dapui").setup()
+			end
+		}
+
 
 		-- git
 		use {
@@ -185,6 +198,7 @@ return packer.startup({
 				require("todo-comments").setup()
 			end
 		}
+		use "rcarriga/nvim-notify"
 	end,
 	config = {
 		profile = {

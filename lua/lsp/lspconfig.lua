@@ -79,6 +79,14 @@ local on_attach = function(client, bufnr)
 		]], false)
 	end
 
+	vim.cmd([[
+		augroup lsp_diagnostics
+			autocmd!
+			autocmd User LspDiagnosticsChanged lua vim.lsp.diagnostic.set_qflist({ open = false })
+			autocmd User LspDiagnosticsChanged lua vim.lsp.diagnostic.set_loclist({ open = false })
+		augroup END
+	]])
+
     if client.resolved_capabilities.document_highlight then
         vim.api.nvim_exec([[
         augroup lsp_document_highlight
