@@ -153,12 +153,7 @@ return packer.startup({
 				})
 			end
 		}
-		use {
-			"JoosepAlviste/nvim-ts-context-commentstring",
-			config = function()
-				require("nvim-treesitter.configs").setup()
-			end
-		}
+		use "JoosepAlviste/nvim-ts-context-commentstring"
 		use {
 			"akinsho/nvim-toggleterm.lua",
 			cmd = "ToggleTerm",
