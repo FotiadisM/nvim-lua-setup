@@ -47,8 +47,8 @@ nvim_set_keymap("n", "<C-p>", ":Telescope find_files<CR>", opt)
 nvim_set_keymap("n", "<leader>fm", ":Telescope media_files<CR>", opt)
 nvim_set_keymap("n", "<leader>fh", ":Telescope help_tags<CR>", opt)
 nvim_set_keymap("n", "<leader>fc", ":Telescope commands<CR>", opt)
+nvim_set_keymap("n", "<leader>fb", ":Telescope builtin<CR>", opt)
 nvim_set_keymap("n", "<leader>fd", ":Telescope find_files cwd=~/.config/nvim<CR>", opt)
-nvim_set_keymap("n", "<leader>ft", ":TodoTelescope<CR>", opt)
 
 -- bufferline
 nvim_set_keymap("n", "L", ":BufferLineCycleNext<CR>", opt)
