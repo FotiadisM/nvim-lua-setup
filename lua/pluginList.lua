@@ -177,6 +177,7 @@ return packer.startup({
 				require("plugins.nvim-autopairs")
 			end
 		}
+		use "windwp/nvim-ts-autotag"
 		use {
 			"lukas-reineke/indent-blankline.nvim",
 			config = function()
