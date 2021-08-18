@@ -13,25 +13,11 @@ vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
 )
 
 local lspSignatureCfg = {
-	bind = true, -- This is mandatory, otherwise border config won't get registered.
-				 -- If you want to hook lspsaga or other signature handler, pls set to false
-	doc_lines = 2, -- will show two lines of comment/doc(if there are more than two lines in doc, will be truncated);
-                   -- set to 0 if you DO NOT want any API comments be shown
-                   -- This setting only take effect in insert mode, it does not affect signature help in normal
-                   -- mode, 10 by default
-
-	floating_window = true, -- show hint in a floating window, set to false for virtual text only mode
-	fix_pos = false,  -- set to true, the floating window will not auto-close until finish all parameters
-	hint_enable = false, -- virtual hint enable
-	use_lspsaga = false,  -- set to true if you want to use lspsaga popup
-	hi_parameter = "Search", -- how your parameter will be highlight
-	max_height = 12, -- max height of signature floating_window, if content is more than max_height, you can scroll down
-					 -- to view the hiding contents
-	max_width = 120, -- max_width of signature floating_window, line will be wrapped if exceed max_width
+	hint_enable = false,
 	handler_opts = {
-		border = "single"   -- double, single, shadow, none
+		border = "single",
 	},
-	extra_trigger_chars = {} -- Array of extra characters that will trigger signature completion, e.g., {"(", ","}
+	zindex = 50 -- signatureHelp behind completion items
 }
 
 -- keymaps
@@ -43,9 +29,9 @@ local on_attach = function(client, bufnr)
 
     -- Mappings.
     local opts = { noremap = true, silent = true }
-    buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-    buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
-    buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
+    buf_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+    buf_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
+    buf_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
     buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
     buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
     buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
@@ -70,13 +56,13 @@ local on_attach = function(client, bufnr)
 			augroup END
 		]])
     elseif client.resolved_capabilities.document_range_formatting then
-        buf_set_keymap("n", "<space>rf", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+        buf_set_keymap("n", "<space>rf", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
 	end
 
 	-- add lsp workspace diagnostic to quickfix and buffer diagnostics to localist
 	vim.cmd([[
 		augroup lsp_diagnostics
-			autocmd!
+			autocmd! * <buffer>
 			autocmd User LspDiagnosticsChanged lua vim.lsp.diagnostic.set_qflist({ open = false })
 			autocmd User LspDiagnosticsChanged lua vim.lsp.diagnostic.set_loclist({ open = false })
 		augroup END

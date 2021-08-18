@@ -7,6 +7,9 @@ nvim_set_keymap("i", "<C-s>", "<Esc>:w<CR>a", { noremap = true })
 
 local opt = { noremap = true, silent = true}
 
+-- fix vim weird behavior
+nvim_set_keymap("n", "Y", "y$", {})
+
 -- close current buffer and jump to the previous one
 nvim_set_keymap("n", "<leader>q", ":bp<bar>sp<bar>bn<bar>bd<CR>", opt)
 
