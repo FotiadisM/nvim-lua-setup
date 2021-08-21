@@ -56,6 +56,16 @@ return packer.startup({
 			requires = "nvim-treesitter/nvim-treesitter"
 		}
 		use {
+			"ThePrimeagen/refactoring.nvim",
+			requires = {
+				"nvim-lua/plenary.nvim",
+				"nvim-treesitter/nvim-treesitter"
+			},
+			config = function()
+				require("plugins.refactoring")
+			end
+		}
+		use {
 			"neovim/nvim-lspconfig",
 			config = function()
 				require("lsp.lspconfig")
@@ -162,6 +172,14 @@ return packer.startup({
 			cmd = "ToggleTerm",
 			config = function()
 				require("toggleterm").setup()
+			end
+		}
+		use {
+			"pwntester/octo.nvim",
+			cmd = "Octo",
+			-- after = "telescope.nvim",
+			config=function()
+				require("octo").setup()
 			end
 		}
 		use {
