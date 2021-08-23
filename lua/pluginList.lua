@@ -74,7 +74,7 @@ return packer.startup({
 		use "kabouzeid/nvim-lspinstall"
 		use {
 			"hrsh7th/nvim-compe",
-			event = "InsertEnter",
+			after = "LuaSnip",
 			config = function()
 				require("plugins.nvim-compe")
 			end
@@ -102,10 +102,13 @@ return packer.startup({
 		use "kosayoda/nvim-lightbulb"
 
 		-- snippets
-		use "L3MON4D3/LuaSnip"
+		use {
+			"L3MON4D3/LuaSnip",
+			after = "friendly-snippets"
+		}
 		use {
 			"rafamadriz/friendly-snippets",
-			event = "InsertEnter"
+			event = "InsertEnter",
 		}
 
 		-- debugging
@@ -143,9 +146,14 @@ return packer.startup({
 			end
 		}
 
-
 		-- misc
 		use { "famiu/nvim-reload", cmd = { "Restart", "Reload" }}
+		use {
+			"FotiadisM/tabset.nvim",
+			config = function()
+			    require("plugins.tabset")
+			end
+		}
 		use {
 			"blackCauldron7/surround.nvim",
 			event = "InsertEnter",
@@ -176,8 +184,7 @@ return packer.startup({
 		}
 		use {
 			"pwntester/octo.nvim",
-			cmd = "Octo",
-			-- after = "telescope.nvim",
+			after = "telescope.nvim",
 			config=function()
 				require("octo").setup()
 			end

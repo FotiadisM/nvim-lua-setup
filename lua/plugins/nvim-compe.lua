@@ -67,13 +67,15 @@ _G.s_tab_complete = function()
     end
 end
 
+require("luasnip/loaders/from_vscode").lazy_load()
+
 vim.api.nvim_set_keymap("i", "<C-Space>", "compe#complete()", { expr = true })
-vim.api.nvim_set_keymap("s", "<C-Space>", "compe#complete()", { expr = true })
+-- vim.cmd([[
+-- 	inoremap <silent><expr> <CR> compe#confirm(luaeval("require 'nvim-autopairs'.autopairs_cr()"))
+-- ]])
+vim.api.nvim_set_keymap("i", "<CR>", [[ compe#confirm(luaeval("require 'nvim-autopairs'.autopairs_cr()")) ]], { expr = true })
+vim.api.nvim_set_keymap("i", "<C-e>", "compe#close('<C-e>')",  { expr = true })
 
 vim.api.nvim_set_keymap("i", "<Tab>", "v:lua.tab_complete()", { expr = true })
-vim.api.nvim_set_keymap("s", "<Tab>", "v:lua.tab_complete()", { expr = true })
 vim.api.nvim_set_keymap("i", "<S-Tab>", "v:lua.s_tab_complete()", { expr = true })
-vim.api.nvim_set_keymap("s", "<S-Tab>", "v:lua.s_tab_complete()", { expr = true })
-vim.api.nvim_set_keymap("i", "<C-E>", "<Plug>luasnip-next-choice", {})
-vim.api.nvim_set_keymap("s", "<C-E>", "<Plug>luasnip-next-choice", {})
 
