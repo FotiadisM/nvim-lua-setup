@@ -57,6 +57,7 @@ _G.tab_complete = function()
         return vim.fn['compe#complete']()
     end
 end
+
 _G.s_tab_complete = function()
     if vim.fn.pumvisible() == 1 then
         return t "<Up>"
@@ -70,9 +71,6 @@ end
 require("luasnip/loaders/from_vscode").lazy_load()
 
 vim.api.nvim_set_keymap("i", "<C-Space>", "compe#complete()", { expr = true })
--- vim.cmd([[
--- 	inoremap <silent><expr> <CR> compe#confirm(luaeval("require 'nvim-autopairs'.autopairs_cr()"))
--- ]])
 vim.api.nvim_set_keymap("i", "<CR>", [[ compe#confirm(luaeval("require 'nvim-autopairs'.autopairs_cr()")) ]], { expr = true })
 vim.api.nvim_set_keymap("i", "<C-e>", "compe#close('<C-e>')",  { expr = true })
 
