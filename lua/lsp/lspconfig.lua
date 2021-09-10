@@ -114,6 +114,10 @@ local function setup_servers()
 			config = require("lsp.servers.html").setup(config, on_attach)
 		end
 
+		if server == "json" then
+			config = require("lsp.servers.json").setup(config, on_attach)
+		end
+
 		if server == "go" then
 			config = require("lsp.servers.go").setup(config, on_attach)
 		end
