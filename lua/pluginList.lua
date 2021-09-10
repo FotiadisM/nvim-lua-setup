@@ -115,8 +115,7 @@ return packer.startup({
 		use {
 			"mfussenegger/nvim-dap",
 			config = function()
-				require("dap")
-				vim.fn.sign_define("DapBreakpoint", {text='🛑', texthl='', linehl='', numhl=''})
+				require("dap.nvim-dap")
 			end
 		}
 		use {
@@ -124,19 +123,6 @@ return packer.startup({
 			requires = { "mfussenegger/nvim-dap" },
 			config = function()
 				require("dapui").setup()
-			end
-		}
-		use {
-			"Pocco81/DAPInstall.nvim",
-			config = function()
-				local dap_install = require("dap-install")
-
-				dap_install.setup({
-					installation_path = vim.fn.stdpath("data") .. "/dapinstall/",
-					verbosely_call_debuggers = false,
-				})
-
-				dap_install.config("go_delve_dbg", {})
 			end
 		}
 		-- use "theHamsta/nvim-dap-virtual-text"
