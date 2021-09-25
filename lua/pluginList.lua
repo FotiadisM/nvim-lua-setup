@@ -188,6 +188,13 @@ return packer.startup({
 			end
 		}
 		use {
+			"NTBBloodbath/rest.nvim",
+			requires = { "nvim-lua/plenary.nvim" },
+			config = function()
+				require("rest-nvim").setup()
+			end
+		}
+		use {
 			"norcalli/nvim-colorizer.lua",
 			config = function()
 				require("colorizer").setup()

@@ -49,7 +49,7 @@ nvim_set_keymap("n", "<C-p>", ":Telescope find_files<CR>", opt)
 nvim_set_keymap("n", "<leader>fm", ":Telescope media_files<CR>", opt)
 nvim_set_keymap("n", "<leader>fh", ":Telescope help_tags<CR>", opt)
 nvim_set_keymap("n", "<leader>fc", ":Telescope commands<CR>", opt)
-nvim_set_keymap("n", "<leader>fb", ":Telescope builtin<CR>", opt)
+nvim_set_keymap("n", "<leader>fb", ":Telescope buffers<CR>", opt)
 nvim_set_keymap("n", "<leader>fd", ":Telescope find_files cwd=~/.config/nvim<CR>", opt)
 
 -- bufferline
@@ -76,7 +76,7 @@ nvim_set_keymap("n", "<leader>wt", ":TodoQuickFix<CR>", opt)
 nvim_set_keymap("n", "<leader>ww", ":LspTroubleWorkspaceToggle<CR>", opt)
 
 -- refactoring.nvim
-vim.api.nvim_set_keymap("v", "<leader>rt", ":lua M.refactors()<CR>", opt)
+nvim_set_keymap("v", "<leader>rt", ":lua M.refactors()<CR>", opt)
 
 -- debuging
 nvim_set_keymap("n", "<F5>", ":lua require('dap').continue()<CR>", opt)

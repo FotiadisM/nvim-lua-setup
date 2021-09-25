@@ -3,6 +3,7 @@ require("pluginList")
 require("theme")
 require("options")
 require("mappings")
+require("commands")
 
 vim.notify = require("notify")
 
